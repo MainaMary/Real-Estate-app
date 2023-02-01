@@ -1,7 +1,5 @@
 export enum ActionTypes  {
-    AddName ="ADD_NAME",
-    AddEmail = "ADD_EMAIL",
-    AddPassword="ADD_PASSWORD"
+   textInput = "TEXT_INPUT"
 }
 export  interface initialStateType {
     name: string,
