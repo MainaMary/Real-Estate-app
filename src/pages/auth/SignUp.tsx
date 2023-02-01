@@ -1,21 +1,29 @@
 import React,{useReducer, useState} from "react";
+import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai"
 import { auth } from "../../firebase/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
 import CustomInput from "../../components/CustomInput";
 import CustomLabel from "../../components/CustomLabel";
 import { formReducer } from "../../reducer/formReducer";
-import { ActionTypes } from "../../model/types";
+import { ActionTypes, ErrorType } from "../../model/types";
 
 
 const SignUp = () => {
-  const [error, setError] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
   const initialState = {
     name:'',
     email: ''
 }
-
   const [state, dispatch]:any = useReducer<any>(formReducer, initialState)
+  const [error, setError] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [visible, setVisible] = useState<boolean>(false)
+  const googleProvider = new GoogleAuthProvider()
+
+  const handleVisisble =(e:any) =>{
+    setVisible(prev => !prev)
+  }
   const handleInputChange= (event:any)=>{
     const {name, value} = event.target
     dispatch({
@@ -48,22 +56,40 @@ const SignUp = () => {
       }, 1000);
     }
     setLoading(false);
+    const signInWithGoogle = async () =>{
+      try{
+        await signInWithPopup(auth, googleProvider)
+      }
+      catch(error:any){
+        console.log(error.message);
+        
+
+      }
+
+    }
   }
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="w-[35%]">
         <p>{error}</p>
-        <div>
+        <div className="my-4">
           <CustomLabel>Name</CustomLabel>
-          <CustomInput name="name" onChange={handleInputChange} type="text" value={name}/>
+          <CustomInput placeholder="John Doe" name="name" onChange={handleInputChange} type="text" value={name || ''}/>
         </div>
-        <div>
+        <div className="my-4">
           <CustomLabel>Email</CustomLabel>
-          <CustomInput name="email" onChange={handleInputChange} type="text"  value={email}/>
+          <CustomInput placeholder="johndoe@gmail.com" name="email" onChange={handleInputChange} type="text"  value={email || ''}/>
         </div>
-        <div>
+        <div className="my-4">
           <CustomLabel>Password</CustomLabel>
-          <CustomInput name="password" onChange={handleInputChange} type="text" value={password}/>
+          <div className="relative">
+          <CustomInput name="password" onChange={handleInputChange} type={visible ? "text" :"password"} value={password || ''}/>
+            <div onClick={handleVisisble} className="absolute right-2 top-3">
+            {visible ? <AiFillEyeInvisible/> : <AiFillEye/>}
+            </div>
+          
+          </div>
+          
         </div>
       </form>
     </div>
