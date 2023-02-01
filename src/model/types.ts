@@ -6,3 +6,6 @@ export  interface initialStateType {
     email:string,
     password:string
 }
+export interface ErrorType {
+    message:string
+}
