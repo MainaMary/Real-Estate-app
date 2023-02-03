@@ -92,6 +92,9 @@ const SignUp = () => {
           
         </div>
       </form>
+      <form>
+       <div>Or</div>
+      </form>
     </div>
   );
 };
