@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar'
 import SignUp from './auth/SignUp'
 import Image from "../assets/realEstate.svg"
 const Homepage = () => {
-    const navigate = useNavigate()
+    
   return (
     <div>
       <Navbar/>
