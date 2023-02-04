@@ -70,7 +70,7 @@ const SignUp = () => {
   }
   return (
     <div>
-      <form onSubmit={handleSubmit} className="w-[35%]">
+      <form onSubmit={handleSubmit} className="w-full">
         <p>{error}</p>
         <div className="my-4">
           <CustomLabel>Name</CustomLabel>
