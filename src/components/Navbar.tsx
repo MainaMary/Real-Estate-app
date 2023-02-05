@@ -9,11 +9,14 @@ const Navbar = () => {
  ]
  const navigate = useNavigate()
   return (
-    <div className='flex items-center justify-between h-16 px-8'>
+    <div className='flex items-center justify-between h-32'>
         <h2>Logo design</h2>
-        <ul>
+        <ul className=' w-[10%] flex justify-between'>
             {menuList.map(label =>
-            <NavLink key={label.label} to={label.path}>{label.label}</NavLink>)}
+            <li key={label.label}>
+              <NavLink  to={label.path} className={({isActive})=> isActive ? " text-primary-color border-b-2 border-primary-color" :""}>{label.label}</NavLink>
+            </li>
+            )}
         </ul>
         <div className='flex'>
             <CustomButton name="Sign in" onClick={() => navigate('/login')}/>

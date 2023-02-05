@@ -8,6 +8,7 @@ import CustomInput from "../../components/CustomInput";
 import CustomLabel from "../../components/CustomLabel";
 import { formReducer } from "../../reducer/formReducer";
 import { ActionTypes, ErrorType } from "../../model/types";
+import CustomButton from "../../components/CustomButton";
 
 
 const SignUp = () => {
@@ -91,9 +92,18 @@ const SignUp = () => {
           </div>
           
         </div>
+        <div className="my-4 block  md:flex justify-between">
+          <p>Have an account? <span className="text-primary-color">Sign in</span></p>
+          <p>Forgot password?</p>
+        </div>
+        <div className="my-4">
+          <CustomButton name="Sign up"/>
+        </div>
       </form>
       <form>
-       <div>Or</div>
+       <div className="my-4">Or</div>
+       
+       <CustomButton name="Continue with Google"/>
       </form>
     </div>
   );
