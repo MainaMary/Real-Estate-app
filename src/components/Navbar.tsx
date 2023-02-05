@@ -19,8 +19,8 @@ const Navbar = () => {
             )}
         </ul>
         <div className='flex'>
-            <CustomButton name="Sign in" onClick={() => navigate('/login')}/>
-            <CustomButton name="Sign up" onClick={() => navigate('/register')}/>
+            <CustomButton onClick={() => navigate('/login')}>Sign in</CustomButton>
+            <CustomButton  onClick={() => navigate('/register')}>Sign up</CustomButton>
           
         </div>
     </div>

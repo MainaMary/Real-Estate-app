@@ -9,6 +9,7 @@ import CustomLabel from "../../components/CustomLabel";
 import { formReducer } from "../../reducer/formReducer";
 import { ActionTypes, ErrorType } from "../../model/types";
 import CustomButton from "../../components/CustomButton";
+import {FcGoogle} from "react-icons/fc"
 
 
 const SignUp = () => {
@@ -41,7 +42,8 @@ const SignUp = () => {
     try {
       console.log(email, password);
       if (name && password && email) {
-        await createUserWithEmailAndPassword(auth, email, password);
+       const res = await createUserWithEmailAndPassword(auth, email, password);
+       console.log(res,'response')
        // navigate("/login");
       }
 
@@ -57,17 +59,19 @@ const SignUp = () => {
       }, 1000);
     }
     setLoading(false);
-    const signInWithGoogle = async () =>{
-      try{
-        await signInWithPopup(auth, googleProvider)
-      }
-      catch(error:any){
-        console.log(error.message);
-        
-
-      }
+   
+  }
+  const signInWithGoogle = async (e:any) =>{
+    e.preventDefault()
+    try{
+      await signInWithPopup(auth, googleProvider)
+    }
+    catch(error:any){
+      console.log(error.message);
+      
 
     }
+
   }
   return (
     <div>
@@ -97,13 +101,18 @@ const SignUp = () => {
           <p>Forgot password?</p>
         </div>
         <div className="my-4">
-          <CustomButton name="Sign up"/>
+          <CustomButton type="submit">Sign up</CustomButton>
         </div>
       </form>
-      <form>
-       <div className="my-4">Or</div>
+      <form onSubmit={signInWithGoogle}>
+       <div className="my-4 items-center flex before:border-t-2 before:flex-1  before:border-gray-500  after:border-t-2 after:flex-1  after:border-gray-500">
+        <p className="uppercase text-center font-medium text-2xl mx-2">or</p>
+       </div>
        
-       <CustomButton name="Continue with Google"/>
+       <CustomButton name="Continue with Google" type="submit">
+          <FcGoogle/>
+          <p className="ml-4">Continue with Google</p>
+        </CustomButton>
       </form>
     </div>
   );
