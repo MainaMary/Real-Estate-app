@@ -1,9 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer base {
+    body {
+      @apply tracking-wide m-0 p-0 text-gray-500;
+    }
+    h1 {
+      @apply text-3xl;
+    }
+    h2 {
+      @apply text-5xl;
+    }
+    a {
+      @apply no-underline;
+    }
+    li {
+        @apply text-lg
+    }
+  }
 .root,
 #root,
 #docs-root {
   --secondary-color: #C91830;
-  --primary-color:bg-red-700
+  
 }
