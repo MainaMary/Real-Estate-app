@@ -15,7 +15,8 @@ import {FcGoogle} from "react-icons/fc"
 const SignUp = () => {
   const initialState = {
     name:'',
-    email: ''
+    email: '',
+    password:''
 }
   const [state, dispatch]:any = useReducer<any>(formReducer, initialState)
   const [error, setError] = useState<string>('')
@@ -64,7 +65,8 @@ const SignUp = () => {
   const signInWithGoogle = async (e:any) =>{
     e.preventDefault()
     try{
-      await signInWithPopup(auth, googleProvider)
+     const response =  await signInWithPopup(auth, googleProvider)
+     console.log(response)
     }
     catch(error:any){
       console.log(error.message);
