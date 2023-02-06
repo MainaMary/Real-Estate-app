@@ -20,6 +20,11 @@ export const formReducer = (state:any, action:Props):Props => {
           ...state,
           [payload.key]: payload.value,
         };
+      case ActionTypes.siginText:
+        return {
+          ...state,
+          [payload.key]: payload.value
+        }
       default:
         throw new Error(`Unknown action type: ${action.type}`);
     }

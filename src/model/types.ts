@@ -1,5 +1,6 @@
 export enum ActionTypes  {
-   textInput = "TEXT_INPUT"
+   textInput = "TEXT_INPUT",
+   siginText = "SIGNIN_TEXT"
 }
 export  interface initialStateType {
     name: string,
