@@ -1,5 +1,7 @@
 import React,{useReducer, useState} from "react";
+import { Link } from "react-router-dom";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai"
+import {FcGoogle} from "react-icons/fc"
 import { auth } from "../../firebase/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
@@ -7,9 +9,10 @@ import { GoogleAuthProvider } from "firebase/auth";
 import CustomInput from "../../components/CustomInput";
 import CustomLabel from "../../components/CustomLabel";
 import { formReducer } from "../../reducer/formReducer";
-import { ActionTypes, ErrorType } from "../../model/types";
+import { ActionTypes} from "../../model/types";
 import CustomButton from "../../components/CustomButton";
-import {FcGoogle} from "react-icons/fc"
+import useCounterHook from "../../hooks/useVisiblehook";
+
 
 
 const SignUp = () => {
@@ -21,12 +24,10 @@ const SignUp = () => {
   const [state, dispatch]:any = useReducer<any>(formReducer, initialState)
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
-  const [visible, setVisible] = useState<boolean>(false)
+  const {visible, handleVisisble} = useCounterHook()
   const googleProvider = new GoogleAuthProvider()
 
-  const handleVisisble =(e:any) =>{
-    setVisible(prev => !prev)
-  }
+  
   const handleInputChange= (event:any)=>{
     const {name, value} = event.target
     dispatch({
@@ -99,7 +100,7 @@ const SignUp = () => {
           
         </div>
         <div className="my-4 block  md:flex justify-between">
-          <p>Have an account? <span className="text-primary-color">Sign in</span></p>
+          <p>Have an account? <span className="text-primary-color"><Link to="/login">Sign in</Link></span></p>
           <p>Forgot password?</p>
         </div>
         <div className="my-4">
