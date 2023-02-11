@@ -26,6 +26,6 @@ export const formReducer = (state:any, action:Props):Props => {
           [payload.key]: payload.value
         }
       default:
-        throw new Error(`Unknown action type: ${action.type}`);
+        throw new Error(`Unknown action type: ${type}`);
     }
   };

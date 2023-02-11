@@ -36,6 +36,7 @@ const SignUp = () => {
     })
   }
   const {name, email, password} = state
+ console.log(auth?.currentUser,'user')
   const handleSubmit = async (e:any)=>{
     e.preventDefault()
     if(!name || !email || !password){
