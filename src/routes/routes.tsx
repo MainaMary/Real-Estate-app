@@ -1,14 +1,27 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements,Route } from "react-router-dom";
 import Homepage from "../pages/Homepage";
-import SignUp from "../pages/auth/SignUp";
-import SignIn from "../pages/auth/SignIn";
+import SignupPage from "../pages/auth/SignupPage";
+import SigninPage from "../pages/auth/SigninPage";
 import Error from "../pages/error/Error";
 import Offers from "../pages/offers/Offers";
+import RootLayout from "../layout/RootLayout";
 const ROOT = "/";
 const SIGNIN = "/login";
 const REGISTER = "/register";
 const OFFERS ="/offers"
 const NOTFOUND = "*";
+export const routes = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path={ROOT} element={<RootLayout/>}>
+      <Route index element={<Homepage/>}/>
+      <Route path="login" element={<SigninPage/>}/>
+      <Route path="register" element={<SignupPage/>}/>
+      <Route path="offers" element={<Offers/>}/>
+      <Route path="*" element={<Error/>}/>
+      <Route/>
+    </Route>
+  )
+)
 export const allRoutes = createBrowserRouter([
   {
     path: ROOT,
@@ -16,11 +29,11 @@ export const allRoutes = createBrowserRouter([
   },
   {
     path: SIGNIN,
-    element: <SignIn />,
+    element: <SigninPage />,
   },
   {
     path: REGISTER,
-    element: <SignUp />,
+    element: <SignupPage />,
   },
   {
     path: OFFERS,
