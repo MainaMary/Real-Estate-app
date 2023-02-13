@@ -11,8 +11,12 @@ interface Props {
     }
 }
 
-
-export const formReducer = (state:any, action:Props):Props => {
+const initialState = {
+  name:'',
+  email: '',
+  password:''
+}
+export const formReducer = (state:initialStateType, action:Props) => {
     const {type, payload} = action
     switch (type) {
       case ActionTypes.textInput:
@@ -25,6 +29,8 @@ export const formReducer = (state:any, action:Props):Props => {
           ...state,
           [payload.key]: payload.value
         }
+      case  ActionTypes.reset:
+        return {initialState}
       default:
         throw new Error(`Unknown action type: ${type}`);
     }

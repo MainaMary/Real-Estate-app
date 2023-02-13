@@ -1,9 +1,10 @@
-import React,{useReducer, useState} from "react";
-import { Link } from "react-router-dom";
+import React,{useReducer, useState, useEffect} from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai"
 import {FcGoogle} from "react-icons/fc"
-import { auth } from "../../firebase/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../firebase/firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import CustomInput from "../../components/CustomInput";
@@ -12,9 +13,21 @@ import { formReducer } from "../../reducer/formReducer";
 import { ActionTypes} from "../../model/types";
 import CustomButton from "../../components/CustomButton";
 import useCounterHook from "../../hooks/useVisiblehook";
+import { validateEmail } from "../../utils/tools";
+import CustomLoader from "../../components/CustomLoader";
 
 
+interface ErrorTypes {
+ pswdErr: string;
+ nameErr: string;
+ emailErr: string
+}
 
+type Errors = {
+  password: string,
+  email: string,
+  name: string
+}
 const SignUp = () => {
   const initialState = {
     name:'',
@@ -23,10 +36,11 @@ const SignUp = () => {
 }
   const [state, dispatch]:any = useReducer<any>(formReducer, initialState)
   const [error, setError] = useState<string>('')
+  const [formErrors, setFormErrors] =useState<Errors>({password:'', name: '', email:''})
   const [loading, setLoading] = useState<boolean>(false)
   const {visible, handleVisisble} = useCounterHook()
   const googleProvider = new GoogleAuthProvider()
-
+  const navigate = useNavigate()
   
   const handleInputChange= (event:any)=>{
     const {name, value} = event.target
@@ -37,29 +51,91 @@ const SignUp = () => {
   }
   const {name, email, password} = state
  console.log(auth?.currentUser,'user')
+ useEffect(()=>{
+  const errors = {}  as Errors
+
+  if(password){
+  console.log(formErrors.password,'pswd');
+  
+    setFormErrors({...formErrors, password:formErrors.password='' })
+  }
+  const removeErrors = () =>{
+    if(password){
+      errors.password = ''
+    }
+    if(email){
+      errors.email = ''
+    }
+    if(name) {
+      errors.name = ''
+    }
+    return errors
+  }
+  removeErrors()
+  if(!Object.keys(formErrors).length){
+    
+  }
+ },[formErrors.password, formErrors.email, formErrors.name])
+ const handleValidation = () =>{
+  const errors = {}  as Errors
+  if(!password){
+     errors.password = 'Password is required'
+  }
+  console.log(password.length,'pswd length')
+  if(password && password.length < 5){
+    errors.password = 'Password should have atleast six characters'
+  }
+  if(!email){
+    errors.email = "Email is required"
+  }
+  if(email && !validateEmail(email)){
+    errors.email = 'Please use a valid email address'
+  }
+  if(!name){
+    errors.name= "Name is required"
+  }
+  return errors
+ }
+ const reset = () => dispatch({ type: ActionTypes.reset })
   const handleSubmit = async (e:any)=>{
     e.preventDefault()
+    setFormErrors(handleValidation())
     if(!name || !email || !password){
       setError('Please provide all details')
     }
+    setLoading(true)
     try {
       console.log(email, password);
       if (name && password && email) {
-       const res = await createUserWithEmailAndPassword(auth, email, password);
-       console.log(res,'response')
-       // navigate("/login");
+       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+       setLoading(false);
+       const user : any = auth?.currentUser
+       updateProfile(user ,{displayName:name})
+       const stateClone = Object.assign({}, state)
+       delete stateClone['password']
+       stateClone.timeStamp = serverTimestamp()
+       console.log(stateClone,'state clone')
+       const docRef = doc(db, "users", userCredential?.user?.uid );
+       const saveTodb = await setDoc(docRef,stateClone)
+       console.log(saveTodb,'response')
+       setError("");
+       reset()
+       setTimeout(() =>{
+        navigate('/login')
+       },100)
       }
 
-      setLoading(true);
-      setError("");
+     
+      
     } catch (error: any) {
       console.log(error.message);
-      if (error.message) {
-        setError("Email already exists");
+      setLoading(false)
+      if (error.message.includes('email-already-in-use')) {
+         setTimeout(() => {
+        setError('Email already exist');
+      }, 100);
       }
-      setTimeout(() => {
-        setError("Account creation failed");
-      }, 1000);
+     
     }
     setLoading(false);
    
@@ -84,10 +160,12 @@ const SignUp = () => {
         <div className="my-4">
           <CustomLabel>Name</CustomLabel>
           <CustomInput placeholder="John Doe" name="name" onChange={handleInputChange} type="text" value={name || ''}/>
+          <p className="text-red-500">{formErrors.name}</p>
         </div>
         <div className="my-4">
           <CustomLabel>Email</CustomLabel>
           <CustomInput placeholder="johndoe@gmail.com" name="email" onChange={handleInputChange} type="text"  value={email || ''}/>
+          <p className="text-red-500">{formErrors.email}</p>
         </div>
         <div className="my-4">
           <CustomLabel>Password</CustomLabel>
@@ -98,14 +176,14 @@ const SignUp = () => {
             </div>
           
           </div>
-          
+          <p className="text-red-500">{formErrors.password}</p>
         </div>
         <div className="my-4 block  md:flex justify-between">
           <p>Have an account? <span className="text-primary-color"><Link to="/login">Sign in</Link></span></p>
           <p>Forgot password?</p>
         </div>
         <div className="my-4">
-          <CustomButton type="submit">Sign up</CustomButton>
+          <CustomButton type="submit">{loading ? <CustomLoader/>: 'Sign up'}</CustomButton>
         </div>
       </form>
       <form onSubmit={signInWithGoogle}>
