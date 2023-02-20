@@ -3,7 +3,7 @@ import CustomLoader from "./components/CustomLoader";
 import { RouterProvider } from "react-router-dom";
 function App() {
   return (
-    <div className="max-w-[1300px] m-auto">
+    <div className=" w-full md:max-w-[1300px] m-auto">
       <RouterProvider router={routes} fallbackElement={<CustomLoader />} />
     </div>
   );

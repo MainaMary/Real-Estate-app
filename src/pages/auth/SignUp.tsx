@@ -143,8 +143,9 @@ const SignUp = () => {
   const signInWithGoogle = async (e:any) =>{
     e.preventDefault()
     try{
-     const response =  await signInWithPopup(auth, googleProvider)
-     console.log(response)
+     const {user} =  await signInWithPopup(auth, googleProvider)
+     console.log(user, 'google response')
+     
     }
     catch(error:any){
       console.log(error.message);
