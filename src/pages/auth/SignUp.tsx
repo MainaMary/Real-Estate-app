@@ -4,7 +4,7 @@ import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai"
 import {FcGoogle} from "react-icons/fc"
 import { auth, db } from "../../firebase/firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import CustomInput from "../../components/CustomInput";
@@ -145,6 +145,9 @@ const SignUp = () => {
     try{
      const {user} =  await signInWithPopup(auth, googleProvider)
      console.log(user, 'google response')
+     const docRef = doc(db,"users", user?.uid)
+     const docSnap = await getDoc(docRef)
+     
      
     }
     catch(error:any){
