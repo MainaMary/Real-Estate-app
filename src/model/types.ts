@@ -11,3 +11,8 @@ export  interface initialStateType {
 export interface ErrorType {
     message:string
 }
+export interface ListType {
+    description:string;
+    address: string;
+    price: number
+}

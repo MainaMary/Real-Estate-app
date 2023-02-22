@@ -8,8 +8,8 @@ const ForgotPassword = () => {
     <form>
          <div className="my-4">
           <CustomLabel>Name</CustomLabel>
-          <CustomInput placeholder="John Doe" name="name" onChange={handleInputChange} type="text" value={name || ''}/>
-          <p className="text-red-500">{formErrors.name}</p>
+          {/* <CustomInput placeholder="John Doe" name="name" onChange={handleInputChange} type="text" value={name || ''}/>
+          <p className="text-red-500">{formErrors.name}</p> */}
         </div>
     </form>
   )

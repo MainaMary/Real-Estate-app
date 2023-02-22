@@ -5,18 +5,21 @@ import SigninPage from "../pages/auth/SigninPage";
 import Error from "../pages/error/Error";
 import Offers from "../pages/offers/Offers";
 import RootLayout from "../layout/RootLayout";
+import AddList from "../pages/listing/AddList";
 const ROOT = "/";
 const SIGNIN = "/login";
 const REGISTER = "/register";
 const OFFERS ="/offers"
+const ADD_LIST ="/addList"
 const NOTFOUND = "*";
 export const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path={ROOT} element={<RootLayout/>}>
       <Route index element={<Homepage/>}/>
-      <Route path="login" element={<SigninPage/>}/>
-      <Route path="register" element={<SignupPage/>}/>
-      <Route path="offers" element={<Offers/>}/>
+      <Route path={SIGNIN} element={<SigninPage/>}/>
+      <Route path={REGISTER} element={<SignupPage/>}/>
+      <Route path={OFFERS} element={<Offers/>}/>
+      <Route path={ADD_LIST} element={<AddList/>}/>
       <Route path="*" element={<Error/>}/>
       <Route/>
     </Route>
