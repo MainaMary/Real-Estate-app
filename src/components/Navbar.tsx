@@ -5,10 +5,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
+import { useAuthContext } from "../context/authContext";
 
 const Navbar = () => {
   const [openMenu, steOpenMenu] = useState<boolean>(false);
   const [toolTip, setToolTip] = useState<boolean>(false);
+  const { currentUser } = useAuthContext();
   const menuList = [
     { path: "/", label: "Home" },
     { path: "/offers", label: "Offers" },
@@ -20,9 +22,9 @@ const Navbar = () => {
     setToolTip((prev) => !prev);
   };
   const navigate = useNavigate();
-  const closeToolTip =() =>{
-   handleToolTip()
-  }
+  const closeToolTip = () => {
+    handleToolTip();
+  };
   return (
     <nav className="flex z-20 bg-white items-center justify-between h-32">
       <h4>Logo design</h4>
@@ -49,25 +51,33 @@ const Navbar = () => {
         ))}
       </ul>
       <div className=" hidden md:flex">
-        <CustomButton onClick={() => navigate("/login")}>Sign in</CustomButton>
-        <CustomButton onClick={() => navigate("/register")}>
-          Sign up
-        </CustomButton>
-        <div  className="relative ml-1">
-          <CgProfile onClick={handleToolTip} />
-          <div>
-            {toolTip && (
-              <div className="absolute rounded-lg bg-gray-400 px-3 py-2 top-8 cursor-pointer right-3 w-[200px] ">
-                <ul>
-                <Link to={"/addList"} onClick={closeToolTip}>User profile</Link>
-                <li>User settings</li>
-                <li>Sign out</li>
-                </ul>
-               
-              </div>
-            )}
+        {currentUser ? (
+          <div className="relative ml-1">
+            <CgProfile onClick={handleToolTip} />
+            <div>
+              {toolTip && (
+                <div className="absolute rounded-lg bg-gray-400 px-3 py-2 top-8 cursor-pointer right-3 w-[200px] ">
+                  <ul>
+                    <Link to={"/addList"} onClick={closeToolTip}>
+                      User profile
+                    </Link>
+                    <li>User settings</li>
+                    <li>Sign out</li>
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <>
+            <CustomButton onClick={() => navigate("/login")}>
+              Sign in
+            </CustomButton>
+            <CustomButton onClick={() => navigate("/register")}>
+              Sign up
+            </CustomButton>
+          </>
+        )}
       </div>
 
       <div className=" block md:hidden" onClick={handleMenu}>
