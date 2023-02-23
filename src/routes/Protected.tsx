@@ -1,12 +1,13 @@
 import React from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
-import Homepage from '../pages/Homepage'
+import { useAuthContext } from '../context/authContext'
 
 const Protected = () => {
+  const {currentUser} = useAuthContext()
     const auth = true
   return (
     <div>
-    {auth ? <Outlet/> : <Navigate to="/"/>}
+    {currentUser ? <Outlet/> : <Navigate to="/"/>}
     </div>
   )
 }
