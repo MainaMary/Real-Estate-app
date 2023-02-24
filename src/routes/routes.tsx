@@ -6,6 +6,7 @@ import Error from "../pages/error/Error";
 import Offers from "../pages/offers/Offers";
 import RootLayout from "../layout/RootLayout";
 import AddList from "../pages/listing/AddList";
+import PublicRoute from "./Public";
 const ROOT = "/";
 const SIGNIN = "/login";
 const REGISTER = "/register";
@@ -15,7 +16,10 @@ const NOTFOUND = "*";
 export const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path={ROOT} element={<RootLayout/>}>
+      
       <Route index element={<Homepage/>}/>
+     
+     
       <Route path={SIGNIN} element={<SigninPage/>}/>
       <Route path={REGISTER} element={<SignupPage/>}/>
       <Route path={OFFERS} element={<Offers/>}/>
