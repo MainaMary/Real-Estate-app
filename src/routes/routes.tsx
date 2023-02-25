@@ -1,12 +1,13 @@
+import React from "react";
 import { createBrowserRouter, createRoutesFromElements,Route } from "react-router-dom";
-import Homepage from "../pages/Homepage";
-import SignupPage from "../pages/auth/SignupPage";
-import SigninPage from "../pages/auth/SigninPage";
 import Error from "../pages/error/Error";
 import Offers from "../pages/offers/Offers";
 import RootLayout from "../layout/RootLayout";
 import AddList from "../pages/listing/AddList";
 import PublicRoute from "./Public";
+const Homepage = React.lazy(()=>import('../pages/Homepage'))
+const SignupPage = React.lazy(()=> import("../pages/auth/SignupPage"))
+const SigninPage = React.lazy(()=> import("../pages/auth/SigninPage"))
 const ROOT = "/";
 const SIGNIN = "/login";
 const REGISTER = "/register";
